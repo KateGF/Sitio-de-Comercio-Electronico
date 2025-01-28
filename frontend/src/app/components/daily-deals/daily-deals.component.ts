@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ProductService } from '../../services/product.service';
+import { RouterModule } from '@angular/router';
 
 interface Deal {
   id: number;
@@ -9,12 +11,13 @@ interface Deal {
   image: string;
   description: string;
   timeLeft: string;
+  
 }
 
 @Component({
   selector: 'app-daily-deals',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './daily-deals.component.html',
   styleUrls: ['./daily-deals.component.scss']
 })
@@ -46,10 +49,12 @@ export class DailyDealsComponent {
       image: "/assets/images/product1.jpg",
       description: "Next-gen gaming console with controller",
       timeLeft: "1h 15m"
+      
     }
   ];
 
   calculateDiscount(original: number, discounted: number): number {
     return Math.round(((original - discounted) / original) * 100);
   }
+
 }

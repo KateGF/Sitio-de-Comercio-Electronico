@@ -1,0 +1,81 @@
+<div *ngIf="product" class="container mx-auto px-4 py-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div>
+        <img [src]="product.image" [alt]="product.name" class="w-full h-auto rounded-lg shadow-lg">
+      </div>
+      <div>
+        <h1 class="text-3xl font-bold mb-4">{{product.name}}</h1>
+        <p class="text-xl font-semibold mb-2">{{product.price | currency}}</p>
+        <div class="flex items-center mb-4">
+          <span class="text-yellow-400 mr-1">★</span>
+          <span>{{product.rating | number:'1.1-1'}} ({{product.reviews.length}} reviews)</span>
+        </div>
+        <p class="mb-4">{{product.description}}</p>
+        <button (click)="addToCart()" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+          Add to Cart
+        </button>
+      </div>
+    </div>
+  
+    <div class="mt-12">
+      <h2 class="text-2xl font-bold mb-4">Specifications</h2>
+      <dl class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <ng-container *ngFor="let spec of product.specifications | keyvalue">
+          <dt class="font-semibold">{{spec.key}}</dt>
+          <dd>{{spec.value}}</dd>
+        </ng-container>
+      </dl>
+    </div>
+  
+    <div class="mt-12">
+      <h2 class="text-2xl font-bold mb-4">Reviews</h2>
+      <div *ngFor="let review of product.reviews" class="mb-4 p-4 bg-gray-100 rounded-lg">
+        <div class="flex items-center justify-between mb-2">
+          <span class="font-semibold">{{review.username}}</span>
+          <span class="text-yellow-400">
+            <ng-container *ngFor="let star of [1,2,3,4,5]">
+              <span [class.text-gray-300]="star > review.rating">★</span>
+            </ng-container>
+          </span>
+        </div>
+        <p>{{review.comment}}</p>
+        <p class="text-sm text-gray-500 mt-2">{{review.date | date}}</p>
+      </div>
+  
+      <div *ngIf="authService.isLoggedIn()" class="mt-8">
+        <h3 class="text-xl font-bold mb-4">Write a Review</h3>
+        <form (ngSubmit)="submitReview()">
+          <div class="mb-4">
+            <label for="rating" class="block mb-2">Rating</label>
+            <select id="rating" name="rating" [(ngModel)]="userReview.rating" class="w-full p-2 border rounded">
+              <option value="1">1 Star</option>
+              <option value="2">2 Stars</option>
+              <option value="3">3 Stars</option>
+              <option value="4">4 Stars</option>
+              <option value="5">5 Stars</option>
+            </select>
+          </div>
+          <div class="mb-4">
+            <label for="comment" class="block mb-2">Comment</label>
+            <textarea id="comment" name="comment" [(ngModel)]="userReview.comment" rows="4" class="w-full p-2 border rounded"></textarea>
+          </div>
+          <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors">
+            Submit Review
+          </button>
+        </form>
+      </div>
+    </div>
+  
+    <div class="mt-12">
+      <h2 class="text-2xl font-bold mb-4">Related Products</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div *ngFor="let relatedProduct of relatedProducts" class="border rounded-lg p-4">
+          <img [src]="relatedProduct.image" [alt]="relatedProduct.name" class="w-full h-48 object-cover mb-4 rounded">
+          <h3 class="font-semibold mb-2">{{relatedProduct.name}}</h3>
+          <p class="text-gray-600 mb-2">{{relatedProduct.price | currency}}</p>
+          <a [routerLink]="['/product', relatedProduct.id]" class="text-blue-600 hover:underline">View Details</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  

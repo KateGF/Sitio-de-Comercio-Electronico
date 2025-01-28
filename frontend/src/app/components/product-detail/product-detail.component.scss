@@ -1,0 +1,132 @@
+// Estilos para la página de detalles del producto
+.product-image {
+    img {
+      @apply w-full h-auto rounded-lg shadow-lg;
+    }
+  }
+  
+  .product-info {
+    @apply space-y-4;
+  
+    .product-title {
+      @apply text-3xl font-bold;
+    }
+  
+    .product-price {
+      @apply text-xl font-semibold text-primary;
+    }
+  
+    .product-rating {
+      @apply flex items-center gap-2;
+      
+      .stars {
+        @apply flex text-yellow-400;
+      }
+    }
+  }
+  
+  .specifications {
+    @apply mt-8;
+  
+    h2 {
+      @apply text-2xl font-bold mb-4;
+    }
+  
+    dl {
+      @apply grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-50 p-4 rounded-lg;
+  
+      dt {
+        @apply font-semibold;
+      }
+  
+      dd {
+        @apply text-gray-600;
+      }
+    }
+  }
+  
+  .reviews-section {
+    @apply mt-8;
+  
+    h2 {
+      @apply text-2xl font-bold mb-4;
+    }
+  
+    .review-card {
+      @apply bg-white shadow rounded-lg p-4 mb-4;
+  
+      .review-header {
+        @apply flex justify-between items-center mb-2;
+  
+        .reviewer-name {
+          @apply font-semibold;
+        }
+  
+        .rating {
+          @apply flex text-yellow-400;
+        }
+      }
+  
+      .review-date {
+        @apply text-sm text-gray-500 mt-2;
+      }
+    }
+  }
+  
+  .review-form {
+    @apply mt-8 bg-gray-50 p-6 rounded-lg;
+  
+    h3 {
+      @apply text-xl font-bold mb-4;
+    }
+  
+    .form-group {
+      @apply mb-4;
+  
+      label {
+        @apply block mb-2;
+      }
+  
+      select, textarea {
+        @apply w-full p-2 border rounded focus:ring-2 focus:ring-primary focus:border-transparent;
+      }
+    }
+  
+    button {
+      @apply bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary/90 transition-colors;
+    }
+  }
+  
+  .related-products {
+    @apply mt-12;
+  
+    h2 {
+      @apply text-2xl font-bold mb-4;
+    }
+  
+    .products-grid {
+      @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6;
+  
+      .product-card {
+        @apply border rounded-lg p-4 hover:shadow-lg transition-shadow;
+  
+        img {
+          @apply w-full h-48 object-cover rounded mb-4;
+        }
+  
+        h3 {
+          @apply font-semibold mb-2;
+        }
+  
+        .price {
+          @apply text-primary font-semibold;
+        }
+  
+        .view-link {
+          @apply text-blue-600 hover:underline mt-2 inline-block;
+        }
+      }
+    }
+  }
+  
+  

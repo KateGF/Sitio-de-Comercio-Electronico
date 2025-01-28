@@ -1,56 +1,23 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-  image: string;
-  description: string;
-  rating: number;
-}
+import { Component, type OnInit } from "@angular/core"
+import { CommonModule } from "@angular/common"
+import { RouterModule } from "@angular/router"
+import { ProductService, type Product } from "../../services/product.service"
 
 @Component({
-  selector: 'app-featured-products',
+  selector: "app-featured-products",
   standalone: true,
   imports: [CommonModule, RouterModule],
-  templateUrl: './featured-products.component.html',
-  styleUrls: ['./featured-products.component.scss']
+  templateUrl: "./featured-products.component.html",
+  styleUrls: ["./featured-products.component.scss"],
 })
-export class FeaturedProductsComponent {
-  featuredProducts: Product[] = [
-    {
-      id: 1,
-      name: "Premium Headphones",
-      price: 199.99,
-      image: "assets/images/product1.jpg",
-      description: "High-quality wireless headphones with noise cancellation",
-      rating: 4.5
-    },
-    {
-      id: 2,
-      name: "Smart Watch",
-      price: 299.99,
-      image: "/assets/images/product1.jpg",
-      description: "Latest generation smartwatch with health tracking",
-      rating: 4.2
-    },
-    {
-      id: 3,
-      name: "Wireless Speaker",
-      price: 149.99,
-      image: "/assets/images/product1.jpg",
-      description: "Portable bluetooth speaker with premium sound",
-      rating: 4.7
-    },
-    {
-      id: 4,
-      name: "Laptop Pro",
-      price: 1299.99,
-      image: "/assets/images/product1.jpg",
-      description: "Professional laptop for demanding tasks",
-      rating: 4.8
-    }
-  ];
+export class FeaturedProductsComponent implements OnInit {
+  featuredProducts: Product[] = []
+
+  constructor(private productService: ProductService) {}
+
+  ngOnInit() {
+    this.productService.getProducts().subscribe((products) => {
+      this.featuredProducts = products.slice(0, 4) // Get first 4 products as featured
+    })
+  }
 }
