@@ -25,7 +25,7 @@ export class DailyDealsComponent {
       name: "Wireless Earbuds",
       originalPrice: 199.99,
       discountedPrice: 149.99,
-      image: "assets/images/deal1.jpg",
+      image: "/assets/images/product1.jpg",
       description: "Premium wireless earbuds with noise cancellation",
       timeLeft: "2h 45m"
     },
@@ -34,7 +34,7 @@ export class DailyDealsComponent {
       name: "4K Smart TV",
       originalPrice: 899.99,
       discountedPrice: 699.99,
-      image: "assets/images/deal2.jpg",
+      image: "/assets/images/product1.jpg",
       description: "55-inch 4K Smart TV with HDR",
       timeLeft: "5h 30m"
     },
@@ -43,7 +43,7 @@ export class DailyDealsComponent {
       name: "Gaming Console",
       originalPrice: 499.99,
       discountedPrice: 449.99,
-      image: "assets/images/deal3.jpg",
+      image: "/assets/images/product1.jpg",
       description: "Next-gen gaming console with controller",
       timeLeft: "1h 15m"
     }

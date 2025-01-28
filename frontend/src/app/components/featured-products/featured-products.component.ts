@@ -32,7 +32,7 @@ export class FeaturedProductsComponent {
       id: 2,
       name: "Smart Watch",
       price: 299.99,
-      image: "assets/images/product2.jpg",
+      image: "/assets/images/product1.jpg",
       description: "Latest generation smartwatch with health tracking",
       rating: 4.2
     },
@@ -40,7 +40,7 @@ export class FeaturedProductsComponent {
       id: 3,
       name: "Wireless Speaker",
       price: 149.99,
-      image: "assets/images/product3.jpg",
+      image: "/assets/images/product1.jpg",
       description: "Portable bluetooth speaker with premium sound",
       rating: 4.7
     },
@@ -48,7 +48,7 @@ export class FeaturedProductsComponent {
       id: 4,
       name: "Laptop Pro",
       price: 1299.99,
-      image: "assets/images/product4.jpg",
+      image: "/assets/images/product1.jpg",
       description: "Professional laptop for demanding tasks",
       rating: 4.8
     }
