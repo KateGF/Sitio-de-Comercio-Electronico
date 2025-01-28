@@ -1,6 +1,22 @@
 import { bootstrapApplication } from '@angular/platform-browser';
-import { appConfig } from './app/app.config';
 import { AppComponent } from './app/app.component';
+import { importProvidersFrom } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { provideRouter } from '@angular/router';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 
-bootstrapApplication(AppComponent, appConfig)
-  .catch((err) => console.error(err));
+bootstrapApplication(AppComponent, {
+  providers: [
+    provideRouter([]), // Define las rutas de la aplicación
+    importProvidersFrom(
+      BrowserModule,
+      FormsModule,
+      HttpClientModule,
+      BrowserAnimationsModule, // 🔹 Requerido para Toastr
+      ToastrModule.forRoot()   // 🔹 Agregar ToastrModule globalmente
+    ),
+  ],
+}).catch((err) => console.error(err));

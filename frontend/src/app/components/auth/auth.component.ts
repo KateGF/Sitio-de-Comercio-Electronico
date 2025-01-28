@@ -1,11 +1,14 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.scss'],
+  standalone: true,  // Asegurar que es standalone
+  imports: [FormsModule],  // Importar FormsModule
 })
 export class AuthComponent {
   name = '';

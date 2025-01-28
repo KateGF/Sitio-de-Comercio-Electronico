@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { AuthComponent } from './components/auth/auth.component'; // Importar correctamente AuthComponent
+import { AuthComponent } from './components/auth/auth.component';
 
 @Component({
-  selector: 'app-root', // Corrige el selector
-  standalone: true, // Declarar como standalone si no usas NgModule
-  imports: [RouterOutlet, AuthComponent], // Asegúrate de incluir AuthComponent correctamente
+  selector: 'app-root',
+  standalone: true,
+  imports: [RouterOutlet, AuthComponent],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'] // Usa styleUrls (plural)
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
   title = 'frontend';
