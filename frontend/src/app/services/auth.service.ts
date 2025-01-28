@@ -1,34 +1,43 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Injectable } from "@angular/core"
+import { Router } from "@angular/router" // Changed from type-only import to regular import
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class AuthService {
-  private isAuthenticatedSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  public isAuthenticated$: Observable<boolean> = this.isAuthenticatedSubject.asObservable();
+  private _isLoggedIn = false
 
-  constructor() {
-    const token = localStorage.getItem('auth_token');
-    if (token) {
-      this.isAuthenticatedSubject.next(true);
-    }
-  }
+  constructor(private router: Router) {} // Now Router can be properly injected
 
-  login(email: string, password: string): void {
-    console.log('Login attempt with:', email, password);
-    localStorage.setItem('auth_token', 'fake_token');
-    this.isAuthenticatedSubject.next(true);
-  }
-
-  register(name: string, email: string, password: string): void {
-    console.log('Register attempt with:', name, email, password);
-    localStorage.setItem('auth_token', 'fake_token');
-    this.isAuthenticatedSubject.next(true);
+  login(email: string, password: string): boolean {
+    // Implement actual login logic here
+    this._isLoggedIn = true
+    return true
   }
 
   logout(): void {
-    localStorage.removeItem('auth_token');
-    this.isAuthenticatedSubject.next(false);
+    this._isLoggedIn = false
+    this.router.navigate(["/login"])
   }
+
+  isLoggedIn(): boolean {
+    return this._isLoggedIn
+  }
+
+  // Optional: Add method to check if user is authenticated
+  getAuthStatus(): boolean {
+    return this._isLoggedIn
+  }
+
+
+  register(name: string, email: string, password: string): boolean {
+    // Implement actual registration logic here
+    // For now, we'll just simulate a successful registration
+    console.log("Registering user:", { name, email, password })
+    this._isLoggedIn = true
+    this.router.navigate(["/"])
+    return true
+  }
+
 }
+

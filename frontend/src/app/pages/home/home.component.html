@@ -1,0 +1,39 @@
+<div class="pt-16">
+    <!-- Hero Section -->
+    <section class="bg-gray-100 dark:bg-gray-800 py-20">
+      <div class="container">
+        <div class="flex flex-col md:flex-row items-center">
+          <div class="md:w-1/2 mb-8 md:mb-0">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Discover Amazing Products</h1>
+            <p class="text-xl text-text-light mb-6">Shop the latest trends and innovative gadgets all in one place.</p>
+            <a routerLink="/products" class="btn btn-primary">Shop Now</a>
+          </div>
+          <div class="md:w-1/2">
+            <img src="assets/images/hero-image.jpg" alt="Hero Image" class="rounded-lg shadow-xl">
+          </div>
+        </div>
+      </div>
+    </section>
+  
+    <div class="container py-12">
+      <!-- Promotion Slider -->
+      <section class="mb-16">
+        <app-promotion-slider></app-promotion-slider>
+      </section>
+  
+      <!-- Featured Products -->
+      <section class="mb-16">
+        <h2 class="text-3xl font-bold mb-8">Featured Products</h2>
+        <app-featured-products></app-featured-products>
+      </section>
+  
+      <!-- Daily Deals -->
+      <section class="mb-16">
+        <div class="flex justify-between items-center mb-8">
+          <h2 class="text-3xl font-bold">Daily Deals</h2>
+          <span class="text-secondary font-semibold">Ends in 24h</span>
+        </div>
+        <app-daily-deals></app-daily-deals>
+      </section>
+    </div>
+  </div>
