@@ -1,10 +1,17 @@
 <header class="bg-white shadow-md">
-    <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
-      <a routerLink="/" class="text-xl font-bold text-gray-800">E-Store</a>
-      <div class="flex space-x-4">
-        <a routerLink="/" class="text-gray-600 hover:text-gray-800">Home</a>
-        <a routerLink="/products" class="text-gray-600 hover:text-gray-800">Products</a>
-        <a routerLink="/cart" class="text-gray-600 hover:text-gray-800">Cart</a>
-      </div>
-    </nav>
-  </header>
+  <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
+    <a routerLink="/" class="text-xl font-bold text-gray-800">E-Store</a>
+    <div class="flex space-x-4">
+      <a routerLink="/" class="text-gray-600 hover:text-gray-800">Home</a>
+      <a routerLink="/products" class="text-gray-600 hover:text-gray-800">Products</a>
+      <a routerLink="/cart" class="text-gray-600 hover:text-gray-800">Cart</a>
+      <ng-container *ngIf="(authService.isAuthenticated$ | async) === false; else loggedIn">
+        <a routerLink="/login" class="text-gray-600 hover:text-gray-800">Login</a>
+        <a routerLink="/register" class="text-gray-600 hover:text-gray-800">Register</a>
+      </ng-container>
+      <ng-template #loggedIn>
+        <button (click)="logout()" class="text-gray-600 hover:text-gray-800">Logout</button>
+      </ng-template>
+    </div>
+  </nav>
+</header>

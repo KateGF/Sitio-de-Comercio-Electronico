@@ -1,12 +1,15 @@
 import { Component } from '@angular/core';
-import { ProductListComponent } from "../product-list/product-list.component";
+import { CommonModule } from '@angular/common';
+import { ProductListComponent } from '../product-list/product-list.component';
 
 @Component({
   selector: 'app-home',
-  imports: [ProductListComponent],
+  standalone: true,
+  imports: [
+    CommonModule,
+    ProductListComponent
+  ],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+  styleUrls: ['./home.component.scss']
 })
-export class HomeComponent {
-
-}
+export class HomeComponent {}
