@@ -20,7 +20,15 @@ export class RegisterComponent {
 
   onSubmit() {
     console.log('Register submitted');
-    this.authService.register(this.name, this.email, this.password);
+    this.authService.register({
+      username: this.name, // Ajustar si "username" es diferente en el formulario
+      email: this.email,
+      firstName: this.name, // Si "name" es firstName en User
+      lastName: '' // Si no tienes un campo de apellido en el formulario
+    }).then(() => {
+      this.router.navigate(['/']);
+    });
+    
     this.router.navigate(['/']);
   }
 }

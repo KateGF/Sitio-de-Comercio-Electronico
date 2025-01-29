@@ -39,8 +39,8 @@ export class ProductDetailsComponent implements OnInit {
 
   submitReview() {
     if (this.product && this.authService.isLoggedIn()) {
-      this.userReview.userId = this.authService.getCurrentUserId()
-      this.userReview.username = this.authService.getCurrentUsername()
+      this.userReview.userId = this.authService.getCurrentUser()?.id || 0
+      this.userReview.username = this.authService.getCurrentUser()?.username || ""
       this.userReview.date = new Date()
       this.productService.addReview(this.product.id, this.userReview)
       this.userReview = {
