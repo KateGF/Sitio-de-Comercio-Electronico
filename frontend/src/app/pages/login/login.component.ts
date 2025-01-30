@@ -1,14 +1,13 @@
 import { Component } from "@angular/core"
 import { CommonModule } from "@angular/common"
-import { RouterModule } from "@angular/router"
-import { FormsModule } from "@angular/forms"
+import { Router } from '@angular/router';import { FormsModule } from "@angular/forms"
 import { Inject } from "@angular/core"
-import type { AuthService } from "../../services/auth.service"
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: "app-login",
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: "./login.component.html",
   styleUrls: ["./login.component.scss"],
 })
@@ -18,7 +17,7 @@ export class LoginComponent {
   isLoading = false
   error = ""
 
-  constructor(@Inject('AuthService') private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   async onSubmit() {
     if (!this.email || !this.password) {
