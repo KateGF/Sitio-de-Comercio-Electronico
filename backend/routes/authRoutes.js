@@ -1,22 +1,26 @@
-const express = require("express");
-const authMiddleware = require("../middlewares/authMiddleware");
-const { login, register } = require("../controllers/authController");
-
+// routes/authRoutes.js
+const express = require('express');
 const router = express.Router();
+const passport = require('passport');
+const authController = require('../controllers/authController');
 
-// Endpoint protegido
-router.get("/me", authMiddleware, (req, res) => {
-  res.status(200).json({
-    success: true,
-    message: "Token válido",
-    user: req.user, // Información del token decodificado
-  });
-});
+router.post('/register', authController.register);
+router.post('/login', authController.login);
 
-// Endpoint para registro
-router.post("/register", register);
+router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+router.get(
+  '/google/callback',
+  passport.authenticate('google', { session: false }),
+  authController.socialAuthCallback
+);
 
-// Endpoint para login
-router.post("/login", login);
+router.get('/facebook', passport.authenticate('facebook', { scope: ['email'] }));
+router.get(
+  '/facebook/callback',
+  passport.authenticate('facebook', { session: false }),
+  authController.socialAuthCallback
+);
+
+router.get('/logout', authController.logout);
 
 module.exports = router;
