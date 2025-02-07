@@ -43,6 +43,8 @@ exports.socialAuthCallback = (req, res) => {
 };
 
 exports.logout = (req, res) => {
+  // For JWT-based authentication, logging out on the server may be a no-op.
+  // If using sessions, this will clear the session.
   req.logout();
   res.json({ message: 'Logged out' });
 };

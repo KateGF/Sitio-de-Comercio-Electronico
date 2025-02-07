@@ -1,0 +1,54 @@
+<div class="container mx-auto px-4 py-8" *ngIf="product">
+  <div class="flex flex-col md:flex-row">
+    <div class="md:w-1/2">
+      <img *ngFor="let img of product.images" [src]="img" alt="{{ product.name }}" class="w-full mb-4 object-cover rounded" />
+    </div>
+    <div class="md:w-1/2 md:pl-8">
+      <h1 class="text-3xl font-bold text-gray-900">{{ product.name }}</h1>
+      <p class="mt-2 text-xl text-gray-800">{{ product.price | currency }}</p>
+      <p class="mt-4 text-gray-700">{{ product.description }}</p>
+      <div class="mt-4 flex space-x-4">
+        <button (click)="addToCart()" class="bg-primary text-white px-4 py-2 rounded hover:bg-accent">
+          Add to Cart
+        </button>
+        <button (click)="addToWishlist()" class="bg-secondary text-white px-4 py-2 rounded hover:bg-gray-700">
+          Wishlist Product
+        </button>
+      </div>
+      <h3 class="mt-6 text-lg font-bold text-gray-900">Technical Specifications</h3>
+      <div class="bg-gray-100 p-4 rounded">
+        <div *ngFor="let spec of product.technicalSpecifications | keyvalue" class="mb-1">
+          <strong>{{ spec.key }}:</strong> {{ spec.value }}
+        </div>
+      </div>
+      <h3 class="mt-6 text-lg font-bold text-gray-900">Reviews</h3>
+      <div *ngFor="let rev of product.reviews" class="border-b py-2">
+        <p class="font-bold text-gray-800">{{ rev.user.username }} - {{ rev.rating }} stars</p>
+        <p class="text-gray-700">{{ rev.comment }}</p>
+      </div>
+      <div class="mt-6">
+        <ng-container *ngIf="isLoggedIn; else loginPrompt">
+          <h3 class="text-lg font-bold text-gray-900">Add a Review</h3>
+          <form (ngSubmit)="submitReview()">
+            <div class="mb-4">
+              <label class="block text-gray-700">Rating:</label>
+              <select [(ngModel)]="review.rating" name="rating" class="border rounded p-2 w-full">
+                <option *ngFor="let r of [0,1,2,3,4,5]" [value]="r">{{ r }}</option>
+              </select>
+            </div>
+            <div class="mb-4">
+              <label class="block text-gray-700">Comment:</label>
+              <textarea [(ngModel)]="review.comment" name="comment" class="border rounded p-2 w-full" rows="3"></textarea>
+            </div>
+            <button type="submit" class="bg-primary text-white px-4 py-2 rounded hover:bg-accent">
+              Submit Review
+            </button>
+          </form>
+        </ng-container>
+        <ng-template #loginPrompt>
+          <p class="text-gray-700">Please <a routerLink="/login" class="text-primary underline">login</a> to submit a review.</p>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>

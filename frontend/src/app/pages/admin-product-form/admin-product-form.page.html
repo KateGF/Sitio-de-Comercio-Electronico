@@ -1,0 +1,46 @@
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-2xl font-bold text-gray-900 mb-4">
+    {{ isEditMode ? 'Edit Product' : 'Create New Product' }}
+  </h1>
+  <form (ngSubmit)="saveProduct()">
+    <div class="mb-4">
+      <label class="block text-gray-700">Name:</label>
+      <input type="text" [(ngModel)]="product.name" name="name" class="border p-2 rounded w-full" required/>
+    </div>
+    <div class="mb-4">
+      <label class="block text-gray-700">Price:</label>
+      <input type="number" [(ngModel)]="product.price" name="price" class="border p-2 rounded w-full" required/>
+    </div>
+    <div class="mb-4">
+      <label class="block text-gray-700">Brand:</label>
+      <input type="text" [(ngModel)]="product.brand" name="brand" class="border p-2 rounded w-full" required/>
+    </div>
+    <div class="mb-4">
+      <label class="block text-gray-700">Description:</label>
+      <textarea [(ngModel)]="product.description" name="description" class="border p-2 rounded w-full" rows="3" required></textarea>
+    </div>
+    <div class="mb-4">
+      <label class="block text-gray-700">Images (comma-separated URLs):</label>
+      <input type="text" [(ngModel)]="product.images" name="images" class="border p-2 rounded w-full"/>
+    </div>
+    <div class="mb-4">
+      <label class="block text-gray-700">Technical Specifications (JSON):</label>
+      <textarea [(ngModel)]="product.technicalSpecifications" name="technicalSpecifications" class="border p-2 rounded w-full" rows="3"></textarea>
+    </div>
+    <div class="mb-4">
+      <label class="block text-gray-700">Inventory:</label>
+      <input type="number" [(ngModel)]="product.inventory" name="inventory" class="border p-2 rounded w-full" required/>
+    </div>
+    <div class="mb-4">
+      <label class="block text-gray-700">Discount Type (percentage/fixed):</label>
+      <input type="text" [(ngModel)]="product.discount.type" name="discountType" class="border p-2 rounded w-full" />
+    </div>
+    <div class="mb-4">
+      <label class="block text-gray-700">Discount Value:</label>
+      <input type="number" [(ngModel)]="product.discount.value" name="discountValue" class="border p-2 rounded w-full" />
+    </div>
+    <button type="submit" class="bg-primary text-white px-4 py-2 rounded hover:bg-accent">
+      {{ isEditMode ? 'Update Product' : 'Create Product' }}
+    </button>
+  </form>
+</div>

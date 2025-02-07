@@ -1,0 +1,20 @@
+<div class="relative">
+  <div class="absolute inset-0 bg-black opacity-10 backdrop-blur-sm"></div>
+  <app-carousel [items]="highlightedProducts"></app-carousel>
+</div>
+
+<section class="container mx-auto px-4 py-8">
+  <h2 class="text-2xl font-bold text-gray-900 mb-4">Deals of the Day</h2>
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+    <div *ngFor="let product of dealsOfTheDay">
+      <app-product-card [product]="product"></app-product-card>
+    </div>
+  </div>
+  
+  <h2 class="text-2xl font-bold text-gray-900 mb-4">Featured Products</h2>
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+    <div *ngFor="let product of featuredProducts">
+      <app-product-card [product]="product"></app-product-card>
+    </div>
+  </div>
+</section>

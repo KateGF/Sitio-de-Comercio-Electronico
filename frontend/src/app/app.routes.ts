@@ -1,19 +1,29 @@
-import type { Routes } from "@angular/router"
-import { HomeComponent } from "./pages/home/home.component"
-import { ProductListComponent } from "./pages/product-list/product-list.component"
-import { CartComponent } from "./pages/cart/cart.component"
-import { LoginComponent } from "./pages/login/login.component"
-import { RegisterComponent } from "./pages/register/register.component"
-import { ProductDetailsComponent } from "./components/product-detail/product-detail.component"
+import { Routes } from '@angular/router';
+import { HomePage } from './pages/home/home.page';
+import { ProductListPage } from './pages/product-list/product-list.page';
+import { ProductDetailsPage } from './pages/product-details/product-details.page';
+import { CartPage } from './pages/cart/cart.page';
+import { CheckoutPage } from './pages/checkout/checkout.page';
+import { ProfilePage } from './pages/profile/profile.page';
+import { LoginPage } from './pages/login/login.page';
+import { RegisterPage } from './pages/register/register.page';
+import { WishlistPage } from './pages/wishlist/wishlist.page';
+import { AdminDashboardPage } from './pages/admin-dashboard/admin-dashboard.page';
+import { AdminProductsPage } from './pages/admin-products/admin-products.page';
+import { AdminProductFormPage } from './pages/admin-product-form/admin-product-form.page';
 
-export const routes: Routes = [
-  { path: "", component: HomeComponent },
-  { path: "products", component: ProductListComponent },
-  { path: "product/:id", component: ProductDetailsComponent },
-  { path: "cart", component: CartComponent },
-  { path: "login", component: LoginComponent },
-  { path: "register", component: RegisterComponent },
-  { path: "category/:id", component: ProductListComponent },
-  { path: "**", redirectTo: "" },
-]
-
+export const appRoutes: Routes = [
+  { path: '', component: HomePage },
+  { path: 'products/admin', component: AdminProductsPage },
+  { path: 'products', component: ProductListPage },
+  { path: 'products/:id', component: ProductDetailsPage },
+  { path: 'cart', component: CartPage },
+  { path: 'checkout', component: CheckoutPage },
+  { path: 'profile', component: ProfilePage },
+  { path: 'login', component: LoginPage },
+  { path: 'register', component: RegisterPage },
+  { path: 'wishlist', component: WishlistPage },
+  { path: 'admin', component: AdminDashboardPage },
+  { path: 'admin-product-form', component: AdminProductFormPage },
+  { path: '**', redirectTo: '' }
+];

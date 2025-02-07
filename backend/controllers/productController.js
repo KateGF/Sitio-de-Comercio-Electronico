@@ -1,5 +1,6 @@
 // controllers/productController.js
 const Product = require('../models/Product');
+const Category = require('../models/Category');
 
 exports.createProduct = async (req, res, next) => {
   try {
@@ -33,16 +34,26 @@ exports.deleteProduct = async (req, res, next) => {
 
 exports.getProducts = async (req, res, next) => {
   try {
-    const { category, brand, priceMin, priceMax, popularity, page = 1, limit = 10 } = req.query;
+    let { search, category, brand, priceMin, priceMax, popularity, page = 1, limit = 10 } = req.query;
     let filter = {};
-    if (category) filter.category = category;
-    if (brand) filter.brand = brand;
+
+    if (search) {
+      filter.name = { $regex: search, $options: 'i' };
+    }
+    if (category) {
+      filter.category = category;
+    }
+    if (brand) {
+      filter.brand = brand;
+    }
     if (priceMin || priceMax) {
       filter.price = {};
       if (priceMin) filter.price.$gte = priceMin;
       if (priceMax) filter.price.$lte = priceMax;
     }
-    if (popularity) filter.rating = { $gte: popularity };
+    if (popularity) {
+      filter.rating = { $gte: popularity };
+    }
     const products = await Product.find(filter)
       .skip((page - 1) * limit)
       .limit(parseInt(limit))
@@ -73,6 +84,15 @@ exports.addReview = async (req, res, next) => {
     product.rating = sum / product.reviews.length;
     await product.save();
     res.json(product);
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getBrands = async (req, res, next) => {
+  try {
+    const brands = await Product.distinct('brand');
+    res.json(brands);
   } catch (err) {
     next(err);
   }

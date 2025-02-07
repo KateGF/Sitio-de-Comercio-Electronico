@@ -1,93 +1,28 @@
-import { Injectable } from "@angular/core"
-import { BehaviorSubject } from "rxjs"
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { environment } from '../environment';
+import { Observable } from 'rxjs';
 
-export interface CartItem {
-  id: number
-  name: string
-  price: number
-  quantity: number
-  image: string
-}
-
-export interface ShippingAddress {
-  street: string
-  city: string
-  state: string
-  zipCode: string
-  country: string
-}
-
-@Injectable({
-  providedIn: "root",
-})
+@Injectable({ providedIn: 'root' })
 export class CartService {
-  private cartItems: CartItem[] = []
-  private cartSubject = new BehaviorSubject<CartItem[]>([])
-  private shippingAddress: ShippingAddress | null = null
+  private apiUrl = `${environment.apiUrl}/cart`;
 
-  constructor() {
-    // Load cart from localStorage
-    const savedCart = localStorage.getItem("cart")
-    if (savedCart) {
-      this.cartItems = JSON.parse(savedCart)
-      this.cartSubject.next(this.cartItems)
-    }
+  constructor(private http: HttpClient) {}
+
+  getCart(): Observable<any> {
+    return this.http.get(this.apiUrl);
   }
 
-  getCart() {
-    return this.cartSubject.asObservable()
+  addToCart(item: { productId: string, quantity: number }): Observable<any> {
+    return this.http.post(this.apiUrl, item);
   }
 
-  addToCart(item: CartItem) {
-    const existingItem = this.cartItems.find((i) => i.id === item.id)
-    if (existingItem) {
-      existingItem.quantity += 1
-    } else {
-      this.cartItems.push({ ...item, quantity: 1 })
-    }
-    this.updateCart()
+  updateCartItem(item: { productId: string, quantity: number }): Observable<any> {
+    return this.http.put(this.apiUrl, item);
   }
 
-  removeFromCart(itemId: number) {
-    this.cartItems = this.cartItems.filter((item) => item.id !== itemId)
-    this.updateCart()
-  }
-
-  updateQuantity(itemId: number, quantity: number) {
-    const item = this.cartItems.find((i) => i.id === itemId)
-    if (item) {
-      item.quantity = quantity
-      this.updateCart()
-    }
-  }
-
-  clearCart() {
-    this.cartItems = []
-    this.updateCart()
-  }
-
-  getTotal(): number {
-    return this.cartItems.reduce((total, item) => total + item.price * item.quantity, 0)
-  }
-
-  getItemCount(): number {
-    return this.cartItems.reduce((count, item) => count + item.quantity, 0)
-  }
-
-  setShippingAddress(address: ShippingAddress) {
-    this.shippingAddress = address
-  }
-
-  calculateShipping(): number {
-    // Simple shipping calculation based on total items
-    const baseRate = 10
-    const itemRate = 2
-    return baseRate + this.getItemCount() * itemRate
-  }
-
-  private updateCart() {
-    this.cartSubject.next([...this.cartItems])
-    localStorage.setItem("cart", JSON.stringify(this.cartItems))
+  removeCartItem(productId: string): Observable<any> {
+    const params = new HttpParams().set('productId', productId);
+    return this.http.delete(this.apiUrl, { params });
   }
 }
-

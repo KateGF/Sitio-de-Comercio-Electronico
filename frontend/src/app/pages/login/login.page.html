@@ -1,0 +1,25 @@
+<!-- src/app/pages/login/login.page.html -->
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-2xl font-bold text-gray-900 mb-4">Login</h1>
+  <form (ngSubmit)="login()">
+    <div class="mb-4">
+      <label class="block text-gray-700">Email:</label>
+      <input type="email" [(ngModel)]="credentials.email" name="email" class="border rounded p-2 w-full" required />
+    </div>
+    <div class="mb-4">
+      <label class="block text-gray-700">Password:</label>
+      <input type="password" [(ngModel)]="credentials.password" name="password" class="border rounded p-2 w-full" required />
+    </div>
+    <button type="submit" class="bg-primary text-white px-4 py-2 rounded hover:bg-accent">Login</button>
+  </form>
+  <div *ngIf="errorMessage" class="mt-4 text-red-600">
+    {{ errorMessage }}
+  </div>
+  <div class="mt-4">
+    <p>Or login with:</p>
+    <a href="http://localhost:5000/api/auth/google" class="text-primary hover:underline">Google</a>
+    <span class="mx-2">|</span>
+    <a href="http://localhost:5000/api/auth/facebook" class="text-primary hover:underline">Facebook</a>
+  </div>
+  <p class="mt-4">Don't have an account? <a routerLink="/register" class="text-primary hover:underline">Register</a></p>
+</div>

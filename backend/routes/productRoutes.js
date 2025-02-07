@@ -5,6 +5,7 @@ const { protect, admin } = require('../middleware/authMiddleware');
 const productController = require('../controllers/productController');
 
 router.get('/', productController.getProducts);
+router.get('/brands', productController.getBrands);  // New endpoint for brands
 router.get('/:id', productController.getProductById);
 
 router.post('/', protect, admin, productController.createProduct);

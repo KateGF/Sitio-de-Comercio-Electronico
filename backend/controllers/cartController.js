@@ -53,7 +53,8 @@ exports.updateCartItem = async (req, res, next) => {
 
 exports.removeCartItem = async (req, res, next) => {
   try {
-    const { productId } = req.body;
+    // Now reading productId from query parameter
+    const { productId } = req.query;
     let cart = await Cart.findOne({ user: req.user.id });
     if (cart) {
       cart.items = cart.items.filter((item) => item.product.toString() !== productId);

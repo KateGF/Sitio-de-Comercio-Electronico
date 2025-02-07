@@ -1,0 +1,23 @@
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-2xl font-bold text-gray-900 mb-4">Your Profile</h1>
+  <div *ngIf="!editMode; else editForm">
+    <p class="mb-2"><strong>Username:</strong> {{ user.username }}</p>
+    <p class="mb-2"><strong>Email:</strong> {{ user.email }}</p>
+    <button (click)="editMode = true" class="bg-primary text-white px-4 py-2 rounded hover:bg-accent">Edit Profile</button>
+    <button (click)="logout()" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 ml-4">Logout</button>
+  </div>
+  <ng-template #editForm>
+    <form (ngSubmit)="saveProfile()">
+      <div class="mb-4">
+        <label class="block text-gray-700">Username:</label>
+        <input type="text" [(ngModel)]="user.username" name="username" class="border rounded p-2 w-full" />
+      </div>
+      <div class="mb-4">
+        <label class="block text-gray-700">Email:</label>
+        <input type="email" [(ngModel)]="user.email" name="email" class="border rounded p-2 w-full" />
+      </div>
+      <button type="submit" class="bg-primary text-white px-4 py-2 rounded hover:bg-accent">Save</button>
+      <button type="button" (click)="editMode = false" class="ml-2 border px-4 py-2 rounded hover:bg-gray-200">Cancel</button>
+    </form>
+  </ng-template>
+</div>

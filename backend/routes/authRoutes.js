@@ -21,6 +21,7 @@ router.get(
   authController.socialAuthCallback
 );
 
+// Logout endpoint
 router.get('/logout', authController.logout);
 
 module.exports = router;
