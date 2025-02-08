@@ -1,29 +1,115 @@
 <div class="container mx-auto px-4 py-8">
-  <h1 class="text-2xl font-bold text-gray-900 mb-4">Admin Dashboard</h1>
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-    <div class="bg-white p-4 rounded shadow">
-      <h2 class="font-bold text-gray-800 mb-2">Best Sellers</h2>
-      <ul>
-        <li *ngFor="let product of bestSellers" class="mb-1 text-gray-700">
-          {{ product.product.name }} (Sold: {{ product.totalSold }})
-        </li>
-      </ul>
+  <h1 class="text-2xl font-bold text-gray-900 mb-4">Logistics Dashboard</h1>
+
+  <!-- Main Tabs: Logistics Stats vs. Orders -->
+  <div class="mb-6 flex space-x-4 border-b">
+    <button
+      (click)="setActiveTab('logistics')"
+      [ngClass]="{
+        'border-b-2 border-blue-500 text-blue-500': activeTab === 'logistics',
+        'text-gray-600': activeTab !== 'logistics'
+      }"
+      class="pb-2 focus:outline-none"
+    >
+      Logistics
+    </button>
+    <button
+      (click)="setActiveTab('orders')"
+      [ngClass]="{
+        'border-b-2 border-blue-500 text-blue-500': activeTab === 'orders',
+        'text-gray-600': activeTab !== 'orders'
+      }"
+      class="pb-2 focus:outline-none"
+    >
+      Orders
+    </button>
+  </div>
+
+  <!-- LOGISTICS (stats) TAB -->
+  <div *ngIf="activeTab === 'logistics'">
+    <h2 class="text-xl font-bold text-gray-900 mb-4">Best Sellers</h2>
+    <ul>
+      <li *ngFor="let item of bestSellers">
+        {{ item.product.name }}: {{ item.totalSold }} sold
+      </li>
+    </ul>
+    <h2 class="text-xl font-bold text-gray-900 mb-4 mt-6">Users Registered Per Day</h2>
+    <ul>
+      <li *ngFor="let day of usersPerDay">
+        {{ day._id }}: {{ day.count }} users
+      </li>
+    </ul>
+    <h2 class="text-xl font-bold text-gray-900 mb-4 mt-6">Orders Placed Per Day</h2>
+    <ul>
+      <li *ngFor="let day of ordersPerDay">
+        {{ day._id }}: {{ day.count }} orders
+      </li>
+    </ul>
+  </div>
+
+  <!-- ORDERS TAB -->
+  <div *ngIf="activeTab === 'orders'">
+    <!-- Sub-nav for different statuses -->
+    <div class="mb-4 flex space-x-4">
+      <button
+        *ngFor="let st of ['pending','in preparation','shipped','delivered','denied']"
+        (click)="setOrdersActiveStatus(st)"
+        [ngClass]="{
+          'bg-blue-500 text-white': ordersActiveStatus === st,
+          'bg-gray-300 text-black': ordersActiveStatus !== st
+        }"
+        class="px-3 py-1 rounded focus:outline-none"
+      >
+        {{ st | titlecase }}
+      </button>
     </div>
-    <div class="bg-white p-4 rounded shadow">
-      <h2 class="font-bold text-gray-800 mb-2">Users Per Day</h2>
-      <ul>
-        <li *ngFor="let entry of usersPerDay" class="mb-1 text-gray-700">
-          {{ entry._id }}: {{ entry.count }}
-        </li>
-      </ul>
-    </div>
-    <div class="bg-white p-4 rounded shadow">
-      <h2 class="font-bold text-gray-800 mb-2">Orders Per Day</h2>
-      <ul>
-        <li *ngFor="let entry of ordersPerDay" class="mb-1 text-gray-700">
-          {{ entry._id }}: {{ entry.count }}
-        </li>
-      </ul>
+
+    <!-- Table of Orders for the selected status -->
+    <h2 class="text-xl font-bold text-gray-900 mb-2">Orders ({{ ordersActiveStatus | titlecase }})</h2>
+    <div class="space-y-4">
+      <div
+        *ngFor="let order of filteredOrders"
+        class="border rounded p-4"
+      >
+        <p><strong>Order ID:</strong> {{ order._id }}</p>
+        <p><strong>User:</strong> {{ order.user?.username }} ({{ order.user?.email }})</p>
+        <p><strong>Shipping Address:</strong> {{ order.shippingAddress }}</p>
+        <p><strong>Total:</strong> {{ order.total | currency }}</p>
+        <p><strong>Status:</strong> {{ order.status }}</p>
+
+        <div class="mt-2">
+          <p class="font-bold">Products:</p>
+          <div *ngFor="let item of order.products" class="flex items-center border-t pt-2 mt-2">
+            <img
+              [src]="item.product.images[0]"
+              alt="{{ item.product.name }}"
+              class="w-16 h-16 object-cover mr-4"
+            />
+            <div>
+              <p class="font-bold">{{ item.product.name }}</p>
+              <p class="text-gray-700">Price: {{ item.price | currency }}</p>
+              <p class="text-gray-700">Quantity: {{ item.quantity }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-4 space-x-2" *ngIf="order.status !== 'delivered' && order.status !== 'denied'">
+          <!-- Accept & Deny buttons depending on status -->
+          <button
+            (click)="acceptOrder(order._id)"
+            class="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600"
+          >
+            <!-- if pending => 'in preparation', if in prep => 'shipped', if shipped => 'delivered' -->
+            Accept
+          </button>
+          <button
+            (click)="denyOrder(order._id)"
+            class="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600"
+          >
+            Deny
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>

@@ -14,6 +14,9 @@ import { FormsModule } from '@angular/forms';
 export class AdminProductsPage implements OnInit {
   products: any[] = [];
 
+  // We'll use a tab system: "products" tab vs "notifications"
+  activeTab: string = 'products';
+
   constructor(private productService: ProductService, private router: Router) {}
 
   ngOnInit(): void {
@@ -21,9 +24,15 @@ export class AdminProductsPage implements OnInit {
   }
 
   loadProducts(): void {
-    this.productService.getProducts({ limit: 100 }).subscribe(data => {
+    // Load all products for admin
+    // (Increase limit if needed to get all)
+    this.productService.getProducts({ limit: 9999 }).subscribe(data => {
       this.products = data;
     });
+  }
+
+  createProduct(): void {
+    this.router.navigate(['/admin-product-form']);
   }
 
   editProduct(productId: string): void {
@@ -39,7 +48,12 @@ export class AdminProductsPage implements OnInit {
     }
   }
 
-  createProduct(): void {
-    this.router.navigate(['/admin-product-form']);
+  setActiveTab(tab: string): void {
+    this.activeTab = tab;
+  }
+
+  // A getter to filter products with inventory < 10
+  get lowStockProducts(): any[] {
+    return this.products.filter(prod => prod.inventory < 10);
   }
 }

@@ -1,2 +1,16 @@
 <app-navbar></app-navbar>
 <router-outlet></router-outlet>
+
+<!-- Popup notifications in the bottom-right corner -->
+<div class="fixed right-4 bottom-4 space-y-2 z-50" *ngIf="isAdmin && lowStockProducts.length > 0">
+  <div
+    class="bg-red-600 text-white p-3 rounded shadow"
+    *ngFor="let prod of lowStockProducts"
+  >
+    <strong>Low Stock:</strong>
+    <span class="ml-2">
+      {{ prod.name }} - Only {{ prod.inventory }} left!
+    </span>
+  </div>
+</div>
+

@@ -1,5 +1,6 @@
+// product.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 
@@ -9,16 +10,22 @@ export class ProductService {
 
   constructor(private http: HttpClient) {}
 
-  getProducts(queryParams?: any): Observable<any> {
-    return this.http.get(this.apiUrl, { params: queryParams });
+  getProducts(paramsObj?: any): Observable<any[]> {
+    let params = new HttpParams();
+    if (paramsObj) {
+      Object.keys(paramsObj).forEach(key => {
+        params = params.set(key, paramsObj[key]);
+      });
+    }
+    return this.http.get<any[]>(this.apiUrl, { params });
   }
 
   getProductById(id: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${id}`);
+    return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
 
-  addReview(productId: string, review: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/${productId}/reviews`, review);
+  addReview(productId: string, reviewData: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/${productId}/reviews`, reviewData);
   }
 
   getBrands(): Observable<string[]> {

@@ -1,7 +1,39 @@
 <div class="container mx-auto px-4 py-8" *ngIf="product">
   <div class="flex flex-col md:flex-row">
-    <div class="md:w-1/2">
-      <img *ngFor="let img of product.images" [src]="img" alt="{{ product.name }}" class="w-full mb-4 object-cover rounded" />
+    <div class="md:w-1/2 relative">
+      <!-- Carousel code from your existing template -->
+      <div *ngIf="product.images && product.images.length > 1; else singleImage">
+        <a [routerLink]="['/products', product._id]">
+          <img
+            [src]="product.images[currentImageIndex]"
+            alt="{{ product.name }}"
+            class="w-full h-80 object-contain rounded"
+          />
+          <div class="absolute inset-0 flex items-center justify-between">
+            <button
+              (click)="prevImage()"
+              class="ml-2 bg-gray-800 bg-opacity-50 p-2 rounded hover:bg-opacity-75"
+            >
+              &#10094;
+            </button>
+            <button
+              (click)="nextImage()"
+              class="mr-2 bg-gray-800 bg-opacity-50 p-2 rounded hover:bg-opacity-75"
+            >
+              &#10095;
+            </button>
+          </div>
+        </a>
+      </div>
+      <ng-template #singleImage>
+        <a [routerLink]="['/products', product._id]">
+          <img
+            [src]="product.images[0]"
+            alt="{{ product.name }}"
+            class="w-full h-80 object-contain rounded"
+          />
+        </a>
+      </ng-template>
     </div>
     <div class="md:w-1/2 md:pl-8">
       <h1 class="text-3xl font-bold text-gray-900">{{ product.name }}</h1>
@@ -15,17 +47,22 @@
           Wishlist Product
         </button>
       </div>
+
       <h3 class="mt-6 text-lg font-bold text-gray-900">Technical Specifications</h3>
       <div class="bg-gray-100 p-4 rounded">
         <div *ngFor="let spec of product.technicalSpecifications | keyvalue" class="mb-1">
           <strong>{{ spec.key }}:</strong> {{ spec.value }}
         </div>
       </div>
+
       <h3 class="mt-6 text-lg font-bold text-gray-900">Reviews</h3>
       <div *ngFor="let rev of product.reviews" class="border-b py-2">
-        <p class="font-bold text-gray-800">{{ rev.user.username }} - {{ rev.rating }} stars</p>
+        <p class="font-bold text-gray-800">
+          {{ rev.user.username }} - {{ rev.rating }} stars
+        </p>
         <p class="text-gray-700">{{ rev.comment }}</p>
       </div>
+
       <div class="mt-6">
         <ng-container *ngIf="isLoggedIn; else loginPrompt">
           <h3 class="text-lg font-bold text-gray-900">Add a Review</h3>
@@ -46,9 +83,40 @@
           </form>
         </ng-container>
         <ng-template #loginPrompt>
-          <p class="text-gray-700">Please <a routerLink="/login" class="text-primary underline">login</a> to submit a review.</p>
+          <p class="text-gray-700">
+            Please
+            <a routerLink="/login" class="text-primary underline">login</a>
+            to submit a review.
+          </p>
         </ng-template>
       </div>
     </div>
+  </div>
+
+  <!-- Related Products Section -->
+  <div class="mt-8">
+    <h2 class="text-xl font-bold text-gray-900 mb-4">Related Products</h2>
+    <div *ngIf="relatedProducts.length > 0; else noRelated">
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div
+          *ngFor="let rp of relatedProducts"
+          class="border rounded-lg p-4 bg-white shadow hover:shadow-lg transition relative"
+        >
+          <img
+            [src]="rp.images[0]"
+            alt="{{ rp.name }}"
+            class="w-full h-40 object-cover mb-4"
+          />
+          <h3 class="font-bold text-lg text-gray-900">{{ rp.name }}</h3>
+          <p class="text-gray-700">{{ rp.price | currency }}</p>
+          <a [routerLink]="['/products', rp._id]" class="mt-2 inline-block text-primary hover:underline">
+            View Details
+          </a>
+        </div>
+      </div>
+    </div>
+    <ng-template #noRelated>
+      <p class="text-gray-700">No related products found.</p>
+    </ng-template>
   </div>
 </div>

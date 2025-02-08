@@ -13,10 +13,20 @@ import { CategoryService } from '../../services/category.service';
 })
 export class NavbarComponent implements OnInit {
   categories: any[] = [];
+  productRoute: string = '/products'; // default
 
   constructor(public authService: AuthService, private categoryService: CategoryService) {}
 
   ngOnInit(): void {
+    // If user is admin => /products/admin, otherwise => /products
+    this.authService.currentUser$.subscribe(user => {
+      if (user && user.role === 'admin') {
+        this.productRoute = '/products/admin';
+      } else {
+        this.productRoute = '/products';
+      }
+    });
+    
     this.categoryService.getCategories().subscribe((data: any[]) => {
       this.categories = this.nestCategories(data);
     });

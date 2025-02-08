@@ -4,21 +4,37 @@
     <ul class="hidden md:flex ml-8 space-x-6">
       <ng-container *ngFor="let cat of categories">
         <li class="relative group">
-          <a [routerLink]="['/products']" [queryParams]="{ category: cat._id }" class="hover:text-primary cursor-pointer">
+          <a
+            [routerLink]="[productRoute]"
+            [queryParams]="{ category: cat._id }"
+            class="hover:text-primary cursor-pointer"
+          >
             {{ cat.name }}
           </a>
           <ng-container *ngIf="cat.children && cat.children.length">
-            <div class="absolute left-0 mt-2 w-40 bg-gray-800 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+            <div
+              class="absolute left-0 mt-2 w-40 bg-gray-800 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
+            >
               <ul>
                 <li *ngFor="let sub of cat.children" class="relative group">
-                  <a [routerLink]="['/products']" [queryParams]="{ subcategory: sub._id }" class="hover:text-primary cursor-pointer">
+                  <a
+                    [routerLink]="[productRoute]"
+                    [queryParams]="{ subcategory: sub._id }"
+                    class="hover:text-primary cursor-pointer"
+                  >
                     {{ sub.name }}
                   </a>
                   <ng-container *ngIf="sub.children && sub.children.length">
-                    <div class="absolute left-full top-0 ml-1 w-40 bg-gray-800 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+                    <div
+                      class="absolute left-full top-0 ml-1 w-40 bg-gray-800 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
+                    >
                       <ul>
                         <li *ngFor="let subsub of sub.children">
-                          <a [routerLink]="['/products']" [queryParams]="{ subcategory: subsub._id }" class="hover:text-primary cursor-pointer">
+                          <a
+                            [routerLink]="[productRoute]"
+                            [queryParams]="{ subcategory: subsub._id }"
+                            class="hover:text-primary cursor-pointer"
+                          >
                             {{ subsub.name }}
                           </a>
                         </li>
@@ -33,38 +49,62 @@
       </ng-container>
     </ul>
   </div>
+
   <div>
     <ul class="flex space-x-4">
-      <!-- For admin, display admin tabs -->
-      <ng-container *ngIf="(authService.currentUser$ | async)?.role === 'admin'; else userLinks">
-        <li>
-          <a routerLink="/products/admin" class="hover:text-primary">Products</a>
-        </li>
-        <li>
-          <a routerLink="/admin-users" class="hover:text-primary">Users</a>
-        </li>
-        <li>
-          <a routerLink="/admin-categories" class="hover:text-primary">Categories</a>
-        </li>
-        <li>
-          <a routerLink="/admin" class="hover:text-primary">Statistics</a>
-        </li>
-      </ng-container>
-      <ng-template #userLinks>
-        <li>
-          <a routerLink="/products" class="hover:text-primary">Products</a>
-        </li>
-      </ng-template>
-      <ng-container *ngIf="!(authService.currentUser$ | async)">
-        <li><a routerLink="/register" class="hover:text-primary">Register</a></li>
-        <li><a routerLink="/login" class="hover:text-primary">Login</a></li>
-      </ng-container>
-      <ng-container *ngIf="authService.currentUser$ | async">
+      <!-- Observe the currentUser in a variable -->
+      <ng-container *ngIf="(authService.currentUser$ | async) as currentUser; else noUser">
+        <!-- If admin: show admin links (Products, Users, Categories, Statistics) -->
+        <ng-container *ngIf="currentUser.role === 'admin'; else notAdmin">
+          <!-- Admin sees everything -->
+          <li>
+            <a routerLink="/products/admin" class="hover:text-primary">Products</a>
+          </li>
+          <li>
+            <a routerLink="/admin-users" class="hover:text-primary">Users</a>
+          </li>
+          <li>
+            <a routerLink="/admin-categories" class="hover:text-primary">Categories</a>
+          </li>
+          <!-- Renamed link -->
+          <li>
+            <a routerLink="/admin" class="hover:text-primary">Logistics</a>
+          </li>
+        </ng-container>
+        <!-- If not admin, check if logistics -->
+        <ng-template #notAdmin>
+          <ng-container *ngIf="currentUser.role === 'logistics'; else normalUser">
+            <!-- Logistics sees only “Logistics” link, no CRUD pages -->
+            <li>
+              <a routerLink="/admin" class="hover:text-primary">Logistics</a>
+            </li>
+          </ng-container>
+          <ng-template #normalUser>
+            <li>
+              <a routerLink="/products" class="hover:text-primary">Products</a>
+            </li>
+          </ng-template>
+        </ng-template>
+
+        <!-- Additional links for any logged-in user: Cart, Wishlist, Profile, Logout -->
         <li><a routerLink="/cart" class="hover:text-primary">Cart</a></li>
         <li><a routerLink="/wishlist" class="hover:text-primary">Wishlist</a></li>
         <li><a routerLink="/profile" class="hover:text-primary">Profile</a></li>
-        <li><a (click)="authService.logout()" routerLink="/login" class="hover:text-primary cursor-pointer">Logout</a></li>
+        <li>
+          <a (click)="authService.logout()" routerLink="/login" class="hover:text-primary cursor-pointer"
+            >Logout</a
+          >
+        </li>
       </ng-container>
+
+      <!-- If no user logged in (noUser) -->
+      <ng-template #noUser>
+        <li>
+          <a routerLink="/products" class="hover:text-primary">Products</a>
+        </li>
+        <li><a routerLink="/register" class="hover:text-primary">Register</a></li>
+        <li><a routerLink="/login" class="hover:text-primary">Login</a></li>
+      </ng-template>
     </ul>
   </div>
 </nav>

@@ -26,3 +26,13 @@ exports.logistics = (req, res, next) => {
   if (req.user && (req.user.role === 'admin' || req.user.role === 'logistics')) return next();
   return res.status(403).json({ message: 'Require logistics or admin role' });
 };
+
+exports.adminOrLogistics = (req, res, next) => {
+  if (!req.user) {
+    return res.status(401).json({ message: 'Not authorized' });
+  }
+  if (req.user.role === 'admin' || req.user.role === 'logistics') {
+    return next();
+  }
+  return res.status(403).json({ message: 'Require admin or logistics role' });
+};

@@ -3,7 +3,12 @@ const User = require('../models/User');
 
 exports.getProfile = async (req, res, next) => {
   try {
-    const user = await User.findById(req.user.id).populate('purchaseHistory');
+    const user = await User.findById(req.user.id)
+      .populate({
+        path: 'purchaseHistory',
+        populate: { path: 'products.product', model: 'Product' }
+      })
+      .populate('wishlist');
     res.json(user);
   } catch (err) {
     next(err);

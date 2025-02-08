@@ -1,23 +1,115 @@
 <div class="container mx-auto px-4 py-8">
   <h1 class="text-2xl font-bold text-gray-900 mb-4">Your Profile</h1>
-  <div *ngIf="!editMode; else editForm">
-    <p class="mb-2"><strong>Username:</strong> {{ user.username }}</p>
-    <p class="mb-2"><strong>Email:</strong> {{ user.email }}</p>
-    <button (click)="editMode = true" class="bg-primary text-white px-4 py-2 rounded hover:bg-accent">Edit Profile</button>
-    <button (click)="logout()" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 ml-4">Logout</button>
+
+  <!-- Tab Navigation -->
+  <div class="mb-6 flex space-x-4 border-b">
+    <button
+      (click)="setActiveTab('details')"
+      [ngClass]="{
+        'border-b-2 border-blue-500 text-blue-500': activeTab === 'details',
+        'text-gray-600': activeTab !== 'details'
+      }"
+      class="pb-2 focus:outline-none"
+    >
+      Profile Details
+    </button>
+    <button
+      (click)="setActiveTab('history')"
+      [ngClass]="{
+        'border-b-2 border-blue-500 text-blue-500': activeTab === 'history',
+        'text-gray-600': activeTab !== 'history'
+      }"
+      class="pb-2 focus:outline-none"
+    >
+      Purchase History
+    </button>
   </div>
-  <ng-template #editForm>
-    <form (ngSubmit)="saveProfile()">
-      <div class="mb-4">
-        <label class="block text-gray-700">Username:</label>
-        <input type="text" [(ngModel)]="user.username" name="username" class="border rounded p-2 w-full" />
+
+  <!-- Profile Details View -->
+  <div *ngIf="activeTab === 'details'">
+    <div *ngIf="!editMode; else editForm">
+      <p class="mb-2"><strong>Username:</strong> {{ user.username }}</p>
+      <p class="mb-2"><strong>Email:</strong> {{ user.email }}</p>
+      <button (click)="editMode = true" class="bg-primary text-white px-4 py-2 rounded hover:bg-accent">
+        Edit Profile
+      </button>
+      <button (click)="logout()" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 ml-4">
+        Logout
+      </button>
+      <!-- Delete Account Button -->
+      <button
+        (click)="deleteAccount()"
+        class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600 ml-4"
+      >
+        Delete My Account
+      </button>
+    </div>
+    <ng-template #editForm>
+      <form (ngSubmit)="saveProfile()">
+        <div class="mb-4">
+          <label class="block text-gray-700">Username:</label>
+          <input
+            type="text"
+            [(ngModel)]="user.username"
+            name="username"
+            class="border rounded p-2 w-full"
+          />
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700">Email:</label>
+          <input
+            type="email"
+            [(ngModel)]="user.email"
+            name="email"
+            class="border rounded p-2 w-full"
+          />
+        </div>
+        <button type="submit" class="bg-primary text-white px-4 py-2 rounded hover:bg-accent">
+          Save
+        </button>
+        <button
+          type="button"
+          (click)="editMode = false"
+          class="ml-2 border px-4 py-2 rounded hover:bg-gray-200"
+        >
+          Cancel
+        </button>
+      </form>
+    </ng-template>
+  </div>
+
+  <!-- Purchase History View -->
+  <div *ngIf="activeTab === 'history'">
+    <h2 class="text-xl font-bold text-gray-900 mb-2">Purchase History</h2>
+    <div *ngIf="user.purchaseHistory && user.purchaseHistory.length > 0; else noHistory">
+      <div *ngFor="let order of user.purchaseHistory" class="border rounded p-4 mb-4">
+        <p><strong>Order ID:</strong> {{ order._id }}</p>
+        <p><strong>Date:</strong> {{ order.createdAt | date:'medium' }}</p>
+        <p><strong>Status:</strong> {{ order.status }}</p>
+        <p><strong>Total:</strong> {{ order.total | currency }}</p>
+        <div class="mt-2">
+          <p class="font-bold">Products:</p>
+          <div *ngFor="let item of order.products" class="flex items-center border-t pt-2 mt-2">
+            <img
+              [src]="item.product.images[0]"
+              alt="{{ item.product.name }}"
+              class="w-16 h-16 object-cover mr-4"
+            />
+            <div>
+              <p class="font-bold">{{ item.product.name }}</p>
+              <p class="text-gray-700">{{ item.product.description }}</p>
+              <p class="text-gray-700">Price: {{ item.product.price | currency }}</p>
+              <p class="text-gray-700">Quantity: {{ item.quantity }}</p>
+              <a [routerLink]="['/products', item.product._id]" class="text-blue-500 underline">
+                View Details
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="mb-4">
-        <label class="block text-gray-700">Email:</label>
-        <input type="email" [(ngModel)]="user.email" name="email" class="border rounded p-2 w-full" />
-      </div>
-      <button type="submit" class="bg-primary text-white px-4 py-2 rounded hover:bg-accent">Save</button>
-      <button type="button" (click)="editMode = false" class="ml-2 border px-4 py-2 rounded hover:bg-gray-200">Cancel</button>
-    </form>
-  </ng-template>
+    </div>
+    <ng-template #noHistory>
+      <p>You have no purchase history.</p>
+    </ng-template>
+  </div>
 </div>

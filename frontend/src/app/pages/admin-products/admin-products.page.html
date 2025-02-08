@@ -1,31 +1,111 @@
 <div class="container mx-auto px-4 py-8">
   <h1 class="text-2xl font-bold text-gray-900 mb-4">Admin: Manage Products</h1>
-  <button (click)="createProduct()" class="bg-primary text-white px-4 py-2 rounded hover:bg-accent mb-4">
-    Create New Product
-  </button>
-  <table class="min-w-full border">
-    <thead class="bg-gray-200">
-      <tr>
-        <th class="px-4 py-2 border">Name</th>
-        <th class="px-4 py-2 border">Price</th>
-        <th class="px-4 py-2 border">Brand</th>
-        <th class="px-4 py-2 border">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let product of products" class="hover:bg-gray-100">
-        <td class="px-4 py-2 border">{{ product.name }}</td>
-        <td class="px-4 py-2 border">{{ product.price | currency }}</td>
-        <td class="px-4 py-2 border">{{ product.brand }}</td>
-        <td class="px-4 py-2 border">
-          <button (click)="editProduct(product._id)" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">
-            Edit
-          </button>
-          <button (click)="deleteProduct(product._id)" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 ml-2">
-            Delete
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+
+  <!-- Tab Navigation -->
+  <div class="mb-6 flex space-x-4 border-b">
+    <button
+      (click)="setActiveTab('products')"
+      [ngClass]="{
+        'border-b-2 border-blue-500 text-blue-500': activeTab === 'products',
+        'text-gray-600': activeTab !== 'products'
+      }"
+      class="pb-2 focus:outline-none"
+    >
+      Products
+    </button>
+    <button
+      (click)="setActiveTab('notifications')"
+      [ngClass]="{
+        'border-b-2 border-blue-500 text-blue-500': activeTab === 'notifications',
+        'text-gray-600': activeTab !== 'notifications'
+      }"
+      class="pb-2 focus:outline-none"
+    >
+      Notifications
+    </button>
+  </div>
+
+  <!-- PRODUCTS TAB -->
+  <div *ngIf="activeTab === 'products'">
+    <button
+      (click)="createProduct()"
+      class="bg-primary text-white px-4 py-2 rounded hover:bg-accent mb-4"
+    >
+      Create New Product
+    </button>
+
+    <table class="min-w-full border">
+      <thead class="bg-gray-200">
+        <tr>
+          <th class="px-4 py-2 border">Name</th>
+          <th class="px-4 py-2 border">Price</th>
+          <th class="px-4 py-2 border">Brand</th>
+          <!-- New Stock column -->
+          <th class="px-4 py-2 border">Stock</th>
+          <th class="px-4 py-2 border">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let product of products"
+          class="hover:bg-gray-100"
+        >
+          <td class="px-4 py-2 border">{{ product.name }}</td>
+          <td class="px-4 py-2 border">{{ product.price | currency }}</td>
+          <td class="px-4 py-2 border">{{ product.brand }}</td>
+          <!-- Show current inventory -->
+          <td class="px-4 py-2 border">{{ product.inventory }}</td>
+          <td class="px-4 py-2 border">
+            <button
+              (click)="editProduct(product._id)"
+              class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
+            >
+              Edit
+            </button>
+            <button
+              (click)="deleteProduct(product._id)"
+              class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 ml-2"
+            >
+              Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- NOTIFICATIONS TAB -->
+  <div *ngIf="activeTab === 'notifications'">
+    <h2 class="text-xl font-bold text-gray-900 mb-4">Low Stock Notifications</h2>
+    <p class="text-gray-700 mb-2">
+      Products with inventory below 10 are listed here.
+    </p>
+    <!-- If no low-stock products -->
+    <div *ngIf="lowStockProducts.length === 0; else lowStockList">
+      <p>No products are about to run out of stock.</p>
+    </div>
+    <ng-template #lowStockList>
+      <table class="min-w-full border">
+        <thead class="bg-gray-200">
+          <tr>
+            <th class="px-4 py-2 border">Name</th>
+            <th class="px-4 py-2 border">Price</th>
+            <th class="px-4 py-2 border">Brand</th>
+            <th class="px-4 py-2 border">Stock</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let product of lowStockProducts"
+            class="hover:bg-gray-100"
+          >
+            <td class="px-4 py-2 border">{{ product.name }}</td>
+            <td class="px-4 py-2 border">{{ product.price | currency }}</td>
+            <td class="px-4 py-2 border">{{ product.brand }}</td>
+            <td class="px-4 py-2 border font-bold text-red-600">{{ product.inventory }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </ng-template>
+  </div>
 </div>

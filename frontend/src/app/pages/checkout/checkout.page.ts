@@ -16,14 +16,14 @@ export class CheckoutPage implements OnInit {
   cart: any = { items: [] };
   shippingAddress: string = '';
   paymentMethod: string = '';
-  
-  // Fields for credit/debit card
+
+  // Credit/Debit card fields
   cardNumber: string = '';
   expirationDate: string = '';
   securityCode: string = '';
   cardholderName: string = '';
 
-  // Fields for PayPal
+  // PayPal fields
   paypalEmail: string = '';
   paypalPassword: string = '';
 
@@ -44,7 +44,7 @@ export class CheckoutPage implements OnInit {
   }
 
   confirmOrder(): void {
-    // Basic checks to ensure fields are filled out
+    // Validate shipping address and payment method
     if (!this.shippingAddress.trim()) {
       alert('Please enter a shipping address.');
       return;
@@ -70,17 +70,41 @@ export class CheckoutPage implements OnInit {
       }
     }
 
-    // Simulate completing the checkout on the backend
-    // In a real app, you'd call orderService.checkout(...)
-    // Then, if successful:
+    // Build the order object
+    const orderData: any = {
+      shippingAddress: this.shippingAddress,
+      paymentMethod: this.paymentMethod,
+      // Optionally include payment details; backend may ignore these for simulation
+      paymentDetails:
+        this.paymentMethod === 'credit'
+          ? {
+              cardNumber: this.cardNumber,
+              expirationDate: this.expirationDate,
+              securityCode: this.securityCode,
+              cardholderName: this.cardholderName
+            }
+          : {
+              paypalEmail: this.paypalEmail,
+              paypalPassword: this.paypalPassword
+            }
+    };
 
-    const confirmed = confirm('Purchase confirmed! Press OK to finalize and go to home page.');
+    // Confirm order with the user
+    const confirmed = confirm('Purchase confirmed! Press OK to finalize your order.');
     if (confirmed) {
-      // Clear the cart on success
-      this.cartService.clearCart().subscribe(() => {
-        // Finally redirect to home
-        this.router.navigate(['/']);
-      });
+      // Call the backend checkout endpoint
+      this.orderService.checkout(orderData).subscribe(
+        (order) => {
+          // Optionally clear the cart locally
+          this.cartService.clearCart().subscribe(() => {
+            alert('Your order has been placed. Thank you!');
+            this.router.navigate(['/']);
+          });
+        },
+        (error) => {
+          alert('There was an error processing your order.');
+        }
+      );
     }
   }
 }
