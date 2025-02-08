@@ -17,9 +17,9 @@
   </div>
   <div class="mt-4">
     <p>Or login with:</p>
-    <a href="http://localhost:5000/api/auth/google" class="text-primary hover:underline">Google</a>
+    <a [href]="googleAuthUrl" class="text-primary hover:underline">Google</a>
     <span class="mx-2">|</span>
-    <a href="http://localhost:5000/api/auth/facebook" class="text-primary hover:underline">Facebook</a>
+    <a [href]="facebookAuthUrl" class="text-primary hover:underline">Facebook</a>
   </div>
   <p class="mt-4">Don't have an account? <a routerLink="/register" class="text-primary hover:underline">Register</a></p>
 </div>

@@ -2,7 +2,7 @@
   <h1 class="text-2xl font-bold text-gray-900 mb-4">Your Wishlist</h1>
 
   <div *ngIf="wishlistProducts.length > 0; else emptyWishlist">
-    <!-- Same styling as Cart -->
+    <!-- Display wishlist items with similar styling as the cart page -->
     <div
       *ngFor="let product of wishlistProducts"
       class="flex items-center justify-between border-b py-4"

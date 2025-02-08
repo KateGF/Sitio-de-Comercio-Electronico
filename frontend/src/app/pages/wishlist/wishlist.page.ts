@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../services/user.service';
 import { CartService } from '../../services/cart.service';
-import { ProductService } from '../../services/product.service'; // <-- We'll need this
-import { forkJoin } from 'rxjs';
+import { ProductService } from '../../services/product.service';
+import { forkJoin, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-wishlist',
@@ -13,8 +14,8 @@ import { forkJoin } from 'rxjs';
   styleUrls: ['./wishlist.page.css']
 })
 export class WishlistPage implements OnInit {
-  wishlistIds: string[] = [];  // We'll store just the IDs from the user
-  wishlistProducts: any[] = [];  // We'll store the actual product objects here
+  // The wishlist from the user profile might be an array of product IDs or already populated objects.
+  wishlistProducts: any[] = [];
 
   constructor(
     private userService: UserService,
@@ -27,21 +28,32 @@ export class WishlistPage implements OnInit {
   }
 
   loadWishlist(): void {
-    // 1. Get the user’s profile
     this.userService.getProfile().subscribe(user => {
-      this.wishlistIds = user.wishlist || [];  // e.g. ["67a5a5405e0d20e4a54b95ae", ...]
-      // 2. If there's nothing, we're done
-      if (!this.wishlistIds.length) {
-        this.wishlistProducts = [];
-        return;
+      if (user) {
+        const wishlist = user.wishlist || [];
+        // Check if wishlist items are already populated (object) or just IDs (string)
+        if (wishlist.length > 0 && typeof wishlist[0] === 'object') {
+          // Already populated; use directly.
+          this.wishlistProducts = wishlist;
+        } else if (wishlist.length > 0) {
+          // Wishlist contains only IDs; fetch product details.
+          const requests = wishlist.map((id: string) =>
+            this.productService.getProductById(id).pipe(
+              catchError(err => {
+                console.error(`Failed to load product with id ${id}`, err);
+                return of(null);
+              })
+            )
+          );
+          // Specify the generic type <any[]> so that productArray is inferred as any[]
+          forkJoin<any[]>(requests).subscribe((productArray) => {
+            // Filter out any null responses from failed requests.
+            this.wishlistProducts = productArray.filter((p: any) => p);
+          });
+        } else {
+          this.wishlistProducts = [];
+        }
       }
-      // 3. For each wishlist ID, call productService.getProductById(...)
-      const requests = this.wishlistIds.map(id => this.productService.getProductById(id));
-      // 4. Use forkJoin to wait for all requests to complete
-      forkJoin(requests).subscribe(productArray => {
-        // productArray will be an array of fully loaded product objects
-        this.wishlistProducts = productArray;
-      });
     });
   }
 
@@ -52,7 +64,6 @@ export class WishlistPage implements OnInit {
   }
 
   removeFromWishlist(productId: string): void {
-    // After removing from wishlist, reload
     this.userService.removeFromWishlist(productId).subscribe(() => {
       alert('Removed from wishlist.');
       this.loadWishlist();
