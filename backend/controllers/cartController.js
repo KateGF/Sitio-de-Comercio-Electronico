@@ -66,3 +66,16 @@ exports.removeCartItem = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.clearCartAll = async (req, res, next) => {
+  try {
+    let cart = await Cart.findOne({ user: req.user.id });
+    if (cart) {
+      cart.items = [];
+      await cart.save();
+    }
+    res.json({ message: 'Cart emptied' });
+  } catch (err) {
+    next(err);
+  }
+};

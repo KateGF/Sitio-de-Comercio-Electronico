@@ -24,4 +24,25 @@ export class UserService {
   addToWishlist(productId: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/wishlist`, { productId });
   }
+
+  removeFromWishlist(productId: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/wishlist`, { body: { productId } });
+  }
+
+  // Admin functions:
+  getAllUsers(): Observable<any[]> {
+    return this.http.get<any[]>(this.apiUrl);
+  }
+
+  addUserByAdmin(userData: any): Observable<any> {
+    return this.http.post<any>(this.apiUrl, userData);
+  }
+
+  updateUserByAdmin(userId: string, userData: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/${userId}`, userData);
+  }
+
+  deleteUserByAdmin(userId: string): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/${userId}`);
+  }
 }

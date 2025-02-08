@@ -11,9 +11,15 @@ import { WishlistPage } from './pages/wishlist/wishlist.page';
 import { AdminDashboardPage } from './pages/admin-dashboard/admin-dashboard.page';
 import { AdminProductsPage } from './pages/admin-products/admin-products.page';
 import { AdminProductFormPage } from './pages/admin-product-form/admin-product-form.page';
+import { AdminUsersPage } from './pages/admin-users/admin-users.page';
+import { AdminUserFormPage } from './pages/admin-user-form/admin-user-form.page';
+import { AdminCategoriesPage } from './pages/admin-categories/admin-categories.page';
+import { AdminCategoryFormPage } from './pages/admin-category-form/admin-category-form.page';
+import { SocialLoginPage } from './pages/social-login/social-login.page';
 
 export const appRoutes: Routes = [
   { path: '', component: HomePage },
+  { path: 'social-login', component: SocialLoginPage },
   { path: 'products/admin', component: AdminProductsPage },
   { path: 'products', component: ProductListPage },
   { path: 'products/:id', component: ProductDetailsPage },
@@ -24,6 +30,11 @@ export const appRoutes: Routes = [
   { path: 'register', component: RegisterPage },
   { path: 'wishlist', component: WishlistPage },
   { path: 'admin', component: AdminDashboardPage },
+  { path: 'admin-products', component: AdminProductsPage },
   { path: 'admin-product-form', component: AdminProductFormPage },
+  { path: 'admin-users', component: AdminUsersPage },
+  { path: 'admin-user-form', component: AdminUserFormPage },
+  { path: 'admin-categories', component: AdminCategoriesPage },
+  { path: 'admin-category-form', component: AdminCategoryFormPage },
   { path: '**', redirectTo: '' }
 ];

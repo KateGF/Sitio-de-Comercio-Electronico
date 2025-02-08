@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CartService } from '../../services/cart.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cart',
@@ -13,7 +14,7 @@ import { CommonModule } from '@angular/common';
 export class CartPage implements OnInit {
   cart: any = { items: [] };
 
-  constructor(private cartService: CartService) {}
+  constructor(private cartService: CartService, private router: Router) {}
 
   ngOnInit(): void {
     this.loadCart();
@@ -31,5 +32,9 @@ export class CartPage implements OnInit {
 
   removeItem(productId: string): void {
     this.cartService.removeCartItem(productId).subscribe(() => this.loadCart());
+  }
+
+  proceedToCheckout(): void {
+    this.router.navigate(['/checkout']);
   }
 }

@@ -5,23 +5,31 @@
   <form (ngSubmit)="saveProduct()">
     <div class="mb-4">
       <label class="block text-gray-700">Name:</label>
-      <input type="text" [(ngModel)]="product.name" name="name" class="border p-2 rounded w-full" required/>
+      <input type="text" [(ngModel)]="product.name" name="name" class="border p-2 rounded w-full" required />
     </div>
     <div class="mb-4">
       <label class="block text-gray-700">Price:</label>
-      <input type="number" [(ngModel)]="product.price" name="price" class="border p-2 rounded w-full" required/>
+      <input type="number" [(ngModel)]="product.price" name="price" class="border p-2 rounded w-full" required />
     </div>
     <div class="mb-4">
       <label class="block text-gray-700">Brand:</label>
-      <input type="text" [(ngModel)]="product.brand" name="brand" class="border p-2 rounded w-full" required/>
+      <input type="text" [(ngModel)]="product.brand" name="brand" class="border p-2 rounded w-full" required />
     </div>
     <div class="mb-4">
       <label class="block text-gray-700">Description:</label>
       <textarea [(ngModel)]="product.description" name="description" class="border p-2 rounded w-full" rows="3" required></textarea>
     </div>
+    <!-- New Category Dropdown -->
+    <div class="mb-4">
+      <label class="block text-gray-700">Category:</label>
+      <select [(ngModel)]="product.category" name="category" class="border p-2 rounded w-full" required>
+        <option value="">Select Category</option>
+        <option *ngFor="let cat of categories" [value]="cat._id">{{ cat.name }}</option>
+      </select>
+    </div>
     <div class="mb-4">
       <label class="block text-gray-700">Images (comma-separated URLs):</label>
-      <input type="text" [(ngModel)]="product.images" name="images" class="border p-2 rounded w-full"/>
+      <input type="text" [(ngModel)]="product.images" name="images" class="border p-2 rounded w-full" />
     </div>
     <div class="mb-4">
       <label class="block text-gray-700">Technical Specifications (JSON):</label>
@@ -29,7 +37,7 @@
     </div>
     <div class="mb-4">
       <label class="block text-gray-700">Inventory:</label>
-      <input type="number" [(ngModel)]="product.inventory" name="inventory" class="border p-2 rounded w-full" required/>
+      <input type="number" [(ngModel)]="product.inventory" name="inventory" class="border p-2 rounded w-full" required />
     </div>
     <div class="mb-4">
       <label class="block text-gray-700">Discount Type (percentage/fixed):</label>

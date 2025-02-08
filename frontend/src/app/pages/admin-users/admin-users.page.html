@@ -1,0 +1,31 @@
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-2xl font-bold text-gray-900 mb-4">Admin: Manage Users</h1>
+  <button (click)="createUser()" class="bg-primary text-white px-4 py-2 rounded hover:bg-accent mb-4">
+    Create New User
+  </button>
+  <table class="min-w-full border">
+    <thead class="bg-gray-200">
+      <tr>
+        <th class="px-4 py-2 border">Username</th>
+        <th class="px-4 py-2 border">Email</th>
+        <th class="px-4 py-2 border">Role</th>
+        <th class="px-4 py-2 border">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users" class="hover:bg-gray-100">
+        <td class="px-4 py-2 border">{{ user.username }}</td>
+        <td class="px-4 py-2 border">{{ user.email }}</td>
+        <td class="px-4 py-2 border">{{ user.role }}</td>
+        <td class="px-4 py-2 border">
+          <button (click)="editUser(user._id)" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">
+            Edit
+          </button>
+          <button (click)="deleteUser(user._id)" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 ml-2">
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

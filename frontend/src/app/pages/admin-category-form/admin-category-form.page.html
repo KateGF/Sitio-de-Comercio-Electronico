@@ -1,0 +1,21 @@
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-2xl font-bold text-gray-900 mb-4">
+    {{ isEditMode ? 'Edit Category' : 'Create New Category' }}
+  </h1>
+  <form (ngSubmit)="saveCategory()">
+    <div class="mb-4">
+      <label class="block text-gray-700">Name:</label>
+      <input type="text" [(ngModel)]="category.name" name="name" class="border p-2 rounded w-full" required/>
+    </div>
+    <div class="mb-4">
+      <label class="block text-gray-700">Parent Category:</label>
+      <select [(ngModel)]="category.parent" name="parent" class="border p-2 rounded w-full">
+        <option value="">None</option>
+        <option *ngFor="let parent of parentOptions" [value]="parent._id">{{ parent.name }}</option>
+      </select>
+    </div>
+    <button type="submit" class="bg-primary text-white px-4 py-2 rounded hover:bg-accent">
+      {{ isEditMode ? 'Update Category' : 'Create Category' }}
+    </button>
+  </form>
+</div>

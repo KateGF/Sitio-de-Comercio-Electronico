@@ -1,17 +1,114 @@
 <div class="container mx-auto px-4 py-8">
   <h1 class="text-2xl font-bold text-gray-900 mb-4">Checkout</h1>
-  <form (ngSubmit)="checkout()">
-    <div class="mb-4">
-      <label class="block text-gray-700">Shipping Address:</label>
-      <input type="text" [(ngModel)]="shippingAddress" name="shippingAddress" class="border rounded p-2 w-full" required />
+
+  <!-- Product Summary -->
+  <div class="mb-6">
+    <h2 class="text-xl font-bold text-gray-900 mb-2">Order Summary</h2>
+    <div *ngIf="cart.items && cart.items.length > 0; else emptyCart">
+      <div class="border rounded p-4 mb-4" *ngFor="let item of cart.items">
+        <div class="flex items-center">
+          <img [src]="item.product.images[0]" alt="{{ item.product.name }}" class="w-20 h-20 object-cover mr-4" />
+          <div>
+            <p class="font-bold">{{ item.product.name }}</p>
+            <p class="text-gray-700">Quantity: {{ item.quantity }}</p>
+            <p class="text-gray-700">Price: {{ item.product.price | currency }}</p>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="mb-4">
-      <label class="block text-gray-700">Payment Method:</label>
-      <select [(ngModel)]="paymentMethod" name="paymentMethod" class="border rounded p-2 w-full">
-        <option value="credit_card">Credit Card</option>
-        <option value="paypal">PayPal</option>
-      </select>
-    </div>
-    <button type="submit" class="bg-primary text-white px-4 py-2 rounded hover:bg-accent">Confirm Order</button>
-  </form>
+    <ng-template #emptyCart>
+      <p>Your cart is empty.</p>
+    </ng-template>
+  </div>
+
+  <!-- Shipping Address -->
+  <div class="mb-4">
+    <label class="block text-gray-700 mb-2">Shipping Address:</label>
+    <input
+      type="text"
+      [(ngModel)]="shippingAddress"
+      name="shippingAddress"
+      class="border rounded p-2 w-full"
+      placeholder="Enter shipping address"
+    />
+  </div>
+
+  <!-- Payment Method -->
+  <div class="mb-4">
+    <label class="block text-gray-700 mb-2">Payment Method:</label>
+    <select [(ngModel)]="paymentMethod" name="paymentMethod" class="border rounded p-2 w-full">
+      <option value="">Select payment method</option>
+      <option value="credit">Credit/Debit Card</option>
+      <option value="paypal">PayPal</option>
+    </select>
+  </div>
+
+  <!-- Credit/Debit Card Fields -->
+  <div *ngIf="paymentMethod === 'credit'" class="border p-4 mb-4 rounded bg-gray-50">
+    <label class="block text-gray-700 mb-2">Card Number:</label>
+    <input
+      type="text"
+      [(ngModel)]="cardNumber"
+      name="cardNumber"
+      class="border rounded p-2 w-full mb-4"
+      placeholder="XXXX-XXXX-XXXX-XXXX"
+    />
+
+    <label class="block text-gray-700 mb-2">Expiration Date:</label>
+    <input
+      type="text"
+      [(ngModel)]="expirationDate"
+      name="expirationDate"
+      class="border rounded p-2 w-full mb-4"
+      placeholder="MM/YY"
+    />
+
+    <label class="block text-gray-700 mb-2">Security Code (CVV):</label>
+    <input
+      type="text"
+      [(ngModel)]="securityCode"
+      name="securityCode"
+      class="border rounded p-2 w-full mb-4"
+      placeholder="3 or 4 digits"
+    />
+
+    <label class="block text-gray-700 mb-2">Cardholder's Name:</label>
+    <input
+      type="text"
+      [(ngModel)]="cardholderName"
+      name="cardholderName"
+      class="border rounded p-2 w-full"
+      placeholder="Name as it appears on card"
+    />
+  </div>
+
+  <!-- PayPal Fields -->
+  <div *ngIf="paymentMethod === 'paypal'" class="border p-4 mb-4 rounded bg-gray-50">
+    <label class="block text-gray-700 mb-2">PayPal Email:</label>
+    <input
+      type="email"
+      [(ngModel)]="paypalEmail"
+      name="paypalEmail"
+      class="border rounded p-2 w-full mb-4"
+      placeholder="email@example.com"
+    />
+
+    <label class="block text-gray-700 mb-2">Password:</label>
+    <input
+      type="password"
+      [(ngModel)]="paypalPassword"
+      name="paypalPassword"
+      class="border rounded p-2 w-full"
+      placeholder="PayPal password"
+    />
+  </div>
+
+  <!-- Confirm Order Button -->
+  <button
+    type="button"
+    (click)="confirmOrder()"
+    class="bg-primary text-white px-4 py-2 rounded hover:bg-accent"
+  >
+    Confirm Order
+  </button>
 </div>

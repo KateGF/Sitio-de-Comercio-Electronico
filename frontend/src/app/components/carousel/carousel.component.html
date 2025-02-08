@@ -1,14 +1,13 @@
+<!-- src/app/components/carousel/carousel.component.html -->
 <div class="relative overflow-hidden">
   <div class="flex transition-transform duration-500" [style.transform]="'translateX(-' + currentIndex * 100 + '%)'">
-    <div *ngFor="let item of items" class="w-full flex-shrink-0">
-      <!-- Clickable image that navigates to product details -->
-      <a [routerLink]="['/products', item._id]">
+    <div *ngFor="let item of items" class="w-full flex-shrink-0 relative">
+      <a [routerLink]="['/products', item._id]" class="block">
         <img [src]="item.images[0]" alt="{{ item.name }}" class="w-full h-80 object-cover">
+        <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <h2 class="text-3xl text-white font-bold">{{ item.name }}</h2>
+        </div>
       </a>
-      <!-- Overlay shows only the title for this slide -->
-      <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-        <h2 class="text-3xl text-white font-bold">{{ item.name }}</h2>
-      </div>
     </div>
   </div>
   <button (click)="prev()" class="absolute left-2 top-1/2 transform -translate-y-1/2 bg-gray-800 bg-opacity-50 p-2 rounded-full hover:bg-opacity-75">

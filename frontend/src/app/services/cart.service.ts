@@ -25,4 +25,8 @@ export class CartService {
     const params = new HttpParams().set('productId', productId);
     return this.http.delete(this.apiUrl, { params });
   }
+
+  clearCart(): Observable<any> {
+    return this.http.delete(`${environment.apiUrl}/cart/clear`);
+  }
 }

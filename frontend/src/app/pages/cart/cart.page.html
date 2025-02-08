@@ -1,24 +1,43 @@
 <div class="container mx-auto px-4 py-8">
   <h1 class="text-2xl font-bold text-gray-900 mb-4">Your Cart</h1>
+
   <div *ngIf="cart.items && cart.items.length > 0; else emptyCart">
     <div *ngFor="let item of cart.items" class="flex items-center justify-between border-b py-4">
-      <div>
-        <h3 class="font-bold text-gray-800">{{ item.product.name }}</h3>
-        <p class="text-gray-700">{{ item.product.price | currency }}</p>
+      <div class="flex items-center">
+        <!-- Product Image -->
+        <img [src]="item.product.images[0]" alt="{{ item.product.name }}" class="w-20 h-20 object-cover mr-4" />
+        
+        <!-- Basic Info -->
+        <div>
+          <h3 class="font-bold text-gray-800">{{ item.product.name }}</h3>
+          <p class="text-gray-700">{{ item.product.price | currency }}</p>
+        </div>
       </div>
       <div>
-        <input type="number" [(ngModel)]="item.quantity" class="border rounded p-1 w-16" (change)="updateQuantity(item.product._id, item.quantity)" />
+        <input
+          type="number"
+          [(ngModel)]="item.quantity"
+          class="border rounded p-1 w-16"
+          (change)="updateQuantity(item.product._id, item.quantity)"
+        />
         <button (click)="removeItem(item.product._id)" class="ml-2 text-red-600 hover:underline cursor-pointer">
           Remove
         </button>
       </div>
     </div>
+
+    <!-- Checkout Button -->
     <div class="mt-6 text-right">
-      <button type="button" routerLink="/checkout" class="bg-primary text-white px-6 py-2 rounded hover:bg-accent cursor-pointer">
+      <button
+        type="button"
+        (click)="proceedToCheckout()"
+        class="bg-primary text-white px-6 py-2 rounded hover:bg-accent cursor-pointer"
+      >
         Proceed to Checkout
       </button>
     </div>
   </div>
+
   <ng-template #emptyCart>
     <p class="text-gray-700">Your cart is empty.</p>
   </ng-template>

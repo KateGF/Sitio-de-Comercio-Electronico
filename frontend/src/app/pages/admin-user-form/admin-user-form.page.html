@@ -1,0 +1,30 @@
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-2xl font-bold text-gray-900 mb-4">
+    {{ isEditMode ? 'Edit User' : 'Create New User' }}
+  </h1>
+  <form (ngSubmit)="saveUser()">
+    <div class="mb-4">
+      <label class="block text-gray-700">Username:</label>
+      <input type="text" [(ngModel)]="user.username" name="username" class="border p-2 rounded w-full" required/>
+    </div>
+    <div class="mb-4">
+      <label class="block text-gray-700">Email:</label>
+      <input type="email" [(ngModel)]="user.email" name="email" class="border p-2 rounded w-full" required/>
+    </div>
+    <div class="mb-4" *ngIf="!isEditMode">
+      <label class="block text-gray-700">Password:</label>
+      <input type="password" [(ngModel)]="user.password" name="password" class="border p-2 rounded w-full" required/>
+    </div>
+    <div class="mb-4">
+      <label class="block text-gray-700">Role:</label>
+      <select [(ngModel)]="user.role" name="role" class="border p-2 rounded w-full">
+        <option value="user">User</option>
+        <option value="admin">Admin</option>
+        <option value="logistics">Logistics</option>
+      </select>
+    </div>
+    <button type="submit" class="bg-primary text-white px-4 py-2 rounded hover:bg-accent">
+      {{ isEditMode ? 'Update User' : 'Create User' }}
+    </button>
+  </form>
+</div>

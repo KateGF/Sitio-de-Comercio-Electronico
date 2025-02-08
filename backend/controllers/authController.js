@@ -37,14 +37,14 @@ exports.login = async (req, res, next) => {
   }
 };
 
+// Modify socialAuthCallback to redirect
 exports.socialAuthCallback = (req, res) => {
   const token = generateToken(req.user);
-  res.json({ token, user: req.user });
+  // Redirect to the frontend social login route with token as query param
+  res.redirect(`http://localhost:4200/social-login?token=${token}`);
 };
 
 exports.logout = (req, res) => {
-  // For JWT-based authentication, logging out on the server may be a no-op.
-  // If using sessions, this will clear the session.
   req.logout();
   res.json({ message: 'Logged out' });
 };

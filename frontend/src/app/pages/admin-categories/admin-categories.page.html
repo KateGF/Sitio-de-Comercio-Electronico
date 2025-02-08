@@ -1,0 +1,29 @@
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-2xl font-bold text-gray-900 mb-4">Admin: Manage Categories</h1>
+  <button (click)="createCategory()" class="bg-primary text-white px-4 py-2 rounded hover:bg-accent mb-4">
+    Create New Category
+  </button>
+  <table class="min-w-full border">
+    <thead class="bg-gray-200">
+      <tr>
+        <th class="px-4 py-2 border">Name</th>
+        <th class="px-4 py-2 border">Parent</th>
+        <th class="px-4 py-2 border">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let cat of categories" class="hover:bg-gray-100">
+        <td class="px-4 py-2 border">{{ cat.name }}</td>
+        <td class="px-4 py-2 border">{{ cat.parent ? cat.parent : 'None' }}</td>
+        <td class="px-4 py-2 border">
+          <button (click)="editCategory(cat._id)" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">
+            Edit
+          </button>
+          <button (click)="deleteCategory(cat._id)" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 ml-2">
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

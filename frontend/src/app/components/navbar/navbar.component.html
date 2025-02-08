@@ -35,25 +35,26 @@
   </div>
   <div>
     <ul class="flex space-x-4">
-      <!-- For admin, Products link goes to admin view -->
-      <ng-container *ngIf="(authService.currentUser$ | async)?.role === 'admin'; else userProducts">
+      <!-- For admin, display admin tabs -->
+      <ng-container *ngIf="(authService.currentUser$ | async)?.role === 'admin'; else userLinks">
         <li>
           <a routerLink="/products/admin" class="hover:text-primary">Products</a>
         </li>
-      </ng-container>
-      <ng-template #userProducts>
         <li>
-          <a routerLink="/products" class="hover:text-primary">Products</a>
+          <a routerLink="/admin-users" class="hover:text-primary">Users</a>
         </li>
-      </ng-template>
-      
-      <!-- Statistics available only to admin or logistics -->
-      <ng-container *ngIf="(authService.currentUser$ | async)?.role === 'admin' || (authService.currentUser$ | async)?.role === 'logistics'">
+        <li>
+          <a routerLink="/admin-categories" class="hover:text-primary">Categories</a>
+        </li>
         <li>
           <a routerLink="/admin" class="hover:text-primary">Statistics</a>
         </li>
       </ng-container>
-      
+      <ng-template #userLinks>
+        <li>
+          <a routerLink="/products" class="hover:text-primary">Products</a>
+        </li>
+      </ng-template>
       <ng-container *ngIf="!(authService.currentUser$ | async)">
         <li><a routerLink="/register" class="hover:text-primary">Register</a></li>
         <li><a routerLink="/login" class="hover:text-primary">Login</a></li>
